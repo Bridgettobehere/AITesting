@@ -27,8 +27,8 @@ Google has the ability to beat pro chess and go players only after a few games.
 Researchers have also been able to replicate a speakers voice just using an image file created by using a simple Fourier Transform. Speed improved by removing the undertones and allowing the overtones to produce the undertones.
 
 ### Completed Demos
-* [1st Order Optimization: Gradient Descent](https://github.com/prmelehan/AITesting/tree/master/Optimization/First%20Order/Gradient%20Descent)
-* [Support Vector Machine](https://github.com/prmelehan/AITesting/tree/master/Support%20Vector%20Machine/)
+* [1st Order Optimization: Gradient Descent](https://github.com/prmelehan/AITesting/blob/master/Optimization/First%20Order/Gradient%20Descent/Gradient%20Descent%20Demo.ipynb)
+* [Support Vector Machine](https://github.com/prmelehan/AITesting/blob/master/Support%20Vector%20Machine/Support%20Vector%20Machine.ipynb)
 * [Handwritten Digit Classification (Tensor Flow Demo) ](https://github.com/prmelehan/AITesting/tree/master/TensorFlow/Tensor%20Flow%20Digit%20Classification.ipynb)
 
 ### Educational sources
