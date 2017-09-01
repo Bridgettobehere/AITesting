@@ -29,6 +29,7 @@ Researchers have also been able to replicate a speakers voice just using an imag
 ### Completed Demos
 * [1st Order Optimization: Gradient Descent](https://github.com/prmelehan/AITesting/tree/master/Optimization/First%20Order/Gradient%20Descent)
 * [Support Vector Machine](https://github.com/prmelehan/AITesting/tree/master/Support%20Vector%20Machine/)
+* [Handwritten Digit Classification (Tensor Flow Demo) ](https://github.com/prmelehan/AITesting/tree/master/TensorFlow/Tensor%20Flow%20Digit%20Classification.ipynb)
 
 ### Educational sources
 
