@@ -35,4 +35,4 @@ To measure the error of our models we use the Root Mean Squared Error Statistic.
 
 ### Examples
 
-There is a prediction Jupyter Notebook on [TSLA Price Prediction](./TSLA Price Prediction.ipynb), as well as python script that allows for the model to be trained on any stock. [stock_predictor.py](./stock_predictor.py)
+There is a prediction Jupyter Notebook on [TSLA Price Prediction](TSLA%20Price%20Prediction.ipynb), as well as python script that allows for the model to be trained on any stock. [stock_predictor.py](stock_predictor.py)
