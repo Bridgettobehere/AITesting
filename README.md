@@ -29,7 +29,7 @@ Neural Machine Translation (NMT) using Bidirectional LSTM Sequence to Sequence M
 * [Support Vector Machine](https://github.com/prmelehan/AITesting/blob/master/Support%20Vector%20Machine/Support%20Vector%20Machine.ipynb)
 * [Handwritten Digit Classification (Tensor Flow Demo) ](https://github.com/prmelehan/AITesting/tree/master/TensorFlow/Tensor%20Flow%20Digit%20Classification.ipynb)
 * [Convolutional Neural Networks](https://github.com/prmelehan/AITesting/tree/master/CNNs/Convolutional%20Neural%20Networks%20with%20Keras.ipynb)
-* [Bidirectional LSTM Recurrent Networks for Stock Predictions]('LSTM/finance/stocks/')
+* [Bidirectional LSTM Recurrent Networks for Stock Predictions](LSTM/finance/stocks/)
 
 ### Educational sources
 
