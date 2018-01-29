@@ -19,7 +19,8 @@ import datetime
 
 # HYPER PARAMETERS
 look_back = 7
-epochs = 1000
+#epochs = 1000
+epochs = 5
 batch_size = 32
 
 # helper for logging the history
@@ -38,23 +39,28 @@ def get_data(stock_symbol):
     print("Done")
     # save this data just incase
     data.to_csv('data/' + str(stock_symbol) + ".csv")
-    prices = data.Close.values.astype('float32')
+    closing = data.Close.values.astype('float32')
+    opening = data.Open.values.astype('float32')
+    high = data.High.values.astype('float32')
+    low = data.Low.values.astype('float32')
 
     # reshape to column vector
-    prices = prices.reshape(len(prices), 1)
-    return prices
+    closing = closing.reshape(len(closing), 1)
+    opening = opening.reshape(len(opening), 1)
+    high = high.reshape(len(high), 1)
+    low = low.reshape(len(low), 1)
 
-def process_datasheet(file_path):
-    data = pd.read_csv(file_path)
-    # MARK: rearrange the data into a format that we will use in our model
+    prices = np.zeros((len(data), 4))
+    print("Prices Shape:", prices.shape)
 
-    # reverse the data so that the first values come first (because 2008 came before 2018)
-    data = data.iloc[::-1]
+    # reassign the values to the tensor
 
-    # get the stored historical prices
-    prices = data.close.values.astype('float32')
-    # reshape so that it turns into a column vector
-    prices = prices.reshape(len(prices), 1)
+    for index, val in enumerate(prices):
+        prices[index, 0] = closing[index]
+        prices[index, 1] = opening[index]
+        prices[index, 2] = high[index]
+        prices[index, 3] = low[index]
+
     return prices
 
 def training_split(data, split):
@@ -73,32 +79,32 @@ def training_split(data, split):
 def create_dataset(dataset, look_back):
     dataX, dataY = [], []
     for index in range(len(dataset)-look_back-1):
-        a = dataset[index:(index+look_back), 0]
+        a = dataset[index:(index+look_back), :]
         dataX.append(a)
-        dataY.append(dataset[index + look_back, 0])
+        dataY.append(dataset[index + look_back, :])
     return np.array(dataX), np.array(dataY)
 
 def train_reshape(trainX, testX):
-    trainX = np.reshape(trainX, (trainX.shape[0], trainX.shape[1], 1))
-    testX = np.reshape(testX, (testX.shape[0], testX.shape[1], 1))
+    trainX = np.reshape(trainX, (trainX.shape[0], trainX.shape[1], trainX.shape[2]))
+    testX = np.reshape(testX, (testX.shape[0], testX.shape[1], testX.shape[2]))
     return trainX, testX
 
 def create_model(look_back):
     model = Sequential()
 
     # add the first Bidirectional LSTM layer
-    model.add(Bidirectional(LSTM(4, return_sequences=True), input_shape=(look_back, 1)))
+    model.add(Bidirectional(LSTM(32, return_sequences=True), input_shape=(look_back, 4)))
     model.add(Dropout(0.2))
 
     # add the second LSTM block
-    model.add(Bidirectional(LSTM(8, return_sequences=True)))
+    model.add(Bidirectional(LSTM(64, return_sequences=True)))
     model.add(Dropout(0.2))
 
     # add the final LSTM block
-    model.add(Bidirectional(LSTM(4, return_sequences=False)))
+    model.add(Bidirectional(LSTM(32, return_sequences=False)))
 
     # add the dense layer to output the number from our feature representations
-    model.add(Dense(units=1))
+    model.add(Dense(units=4))
 
     # compile the model with mse as the loss function and adamoptimizer as the optimizer
     model.compile(loss='mse', optimizer='adam')
@@ -148,12 +154,12 @@ def main():
     testPredictions = model.predict(testX)
 
     trainPredictions = normalizer.inverse_transform(trainPredictions)
-    trainY = normalizer.inverse_transform([trainY])
+    trainY = normalizer.inverse_transform(trainY)
     testPredictions = normalizer.inverse_transform(testPredictions)
-    testY = normalizer.inverse_transform([testY])
+    testY = normalizer.inverse_transform(testY)
 
-    trainingScore = math.sqrt(mean_squared_error(trainY[0], trainPredictions[:, 0]))
-    testingScore = math.sqrt(mean_squared_error(testY[0], testPredictions[:, 0]))
+    trainingScore = math.sqrt(mean_squared_error(trainY[:, 0], trainPredictions[:, 0]))
+    testingScore = math.sqrt(mean_squared_error(testY[:, 0], testPredictions[:, 0]))
 
     print("Training Score: %.5f RMSE" % (trainingScore))
     print("Testing Score: %.5f RMSE" % (testingScore))
@@ -169,8 +175,8 @@ def main():
     testingPlot[:, :] = np.nan
     testingPlot[len(trainPredictions)+(look_back*2)+1:len(prices)-1, :] = testPredictions
 
-    plot(prices, trainingPlot, symbol, "Training Prediction")
-    plot(prices, testingPlot, symbol, "Testing Prediction")
+    plot(prices[:, 0], trainingPlot[:, 0], symbol, "Training Prediction")
+    plot(prices[:, 0], testingPlot[:, 0], symbol, "Testing Prediction")
 
 
 if __name__ == '__main__':
